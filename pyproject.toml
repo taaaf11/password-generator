@@ -1,7 +1,7 @@
 [project]
 name = "pwgen"
 description = "A random password generator in your toolset."
-version = "1.0.0"
+version = "1.1.0"
 authors = [
   {name = "Muhammad Altaaf", email = "taafuuu@gmail.com"}
 ]

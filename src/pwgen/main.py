@@ -26,26 +26,27 @@ class _Config:
 
 
 def _gen_pass(config: _Config) -> str:
-    while True:
-        passwd = ""
-        for _ in range(config.length):
-            while (char := secrets.choice(BASE)) == "\\":
-                continue
-            passwd += char
+    """The main password generator."""
 
-        # contains
-        cont_letters = any(c.isalpha() for c in passwd)
-        cont_digits = any(c.isdigit() for c in passwd)
-        cont_punct = any((c in punctuation) for c in passwd)
+    passwd_len = config.length
+    # string to get password characters from
+    base = ""
+    # the password
+    passwd = ""
 
-        if config.letters and not cont_letters:
-            continue
-        if config.digits and not cont_digits:
-            continue
-        if config.punct and not cont_punct:
-            continue
+    if config.letters:
+        base += "".join(c for c in BASE if c in ascii_letters)
+    if config.digits:
+        base += "".join(c for c in BASE if c in digits)
+    if config.punct:
+        base += "".join(c for c in BASE if c in punctuation)
 
-        return passwd
+    for _ in range(passwd_len):
+        while (char := secrets.choice(base)) == "\\":
+            continue
+        passwd += char
+
+    return passwd
 
 
 def parse_opts() -> Namespace:
@@ -86,23 +87,22 @@ def _gen_config(cmd_opts: Namespace) -> _Config:
     incl_punct = True
     p_len = 8
 
-    incl_letters = cmd_opts.alphabets
-    incl_digits = cmd_opts.numbers
-    incl_punct = cmd_opts.punctuation
-    if cmd_opts.length:
-        p_len = options.length
+    incl_letters = not cmd_opts.alphabets
+    incl_digits = not cmd_opts.numbers
+    incl_punct = not cmd_opts.punctuation
+    p_len = options.length or 8
 
     config = _Config(incl_letters, incl_digits, incl_punct, p_len)
     return config
 
-def gen_passwd():
+def gen_passwd() -> str:
     """Wrapper function for putting all things together."""
-    
+
     options = parse_opts()
     config = _gen_config(options)
-    passwd = _gen_pass(config)
+    passwd: str = _gen_pass(config)
 
-    return config
+    return passwd
 
 
 def main():
