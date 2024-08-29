@@ -1,13 +1,39 @@
+#####################################################
+
+# Name: pwgen
+# Author: Muhammad Altaaf <taafuuu@gmail.com>
+# Description: A random password generator in your
+# toolset.
+
+#####################################################
+
 from __future__ import annotations
 
 import secrets
 import sys
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser, Namespace, RawDescriptionHelpFormatter
 from dataclasses import dataclass
 from string import ascii_letters, digits, punctuation
 
 PROG_NAME = "pwgen"
-PROG_DESC = "A random password generator in your toolset."
+PROG_DESC = """
+██████╗ ██╗    ██╗ ██████╗ ███████╗███╗   ██╗
+██╔══██╗██║    ██║██╔════╝ ██╔════╝████╗  ██║
+██████╔╝██║ █╗ ██║██║  ███╗█████╗  ██╔██╗ ██║
+██╔═══╝ ██║███╗██║██║   ██║██╔══╝  ██║╚██╗██║
+██║     ╚███╔███╔╝╚██████╔╝███████╗██║ ╚████║
+╚═╝      ╚══╝╚══╝  ╚═════╝ ╚══════╝╚═╝  ╚═══╝
+
+A random password generator in your toolset.
+"""
+
+PROG_VERSION = "1.1.0"
+PROG_AUTHOR = "Muhammad Altaaf"
+PROG_AUTHOR_CONTACT = "taafuuu@gmail.com"
+PROG_EPILOG = f"""\
+Version {PROG_VERSION}.
+Written by {PROG_AUTHOR} <{PROG_AUTHOR_CONTACT}>.
+"""
 
 BASE = ascii_letters + digits + punctuation
 
@@ -52,7 +78,7 @@ def _gen_pass(config: _Config) -> str:
 def parse_opts() -> Namespace:
     """Parse command line options and return Namespace object."""
 
-    o_parser = ArgumentParser(prog=PROG_NAME, description=PROG_DESC)
+    o_parser = ArgumentParser(prog=PROG_NAME, description=PROG_DESC, epilog=PROG_EPILOG, formatter_class=RawDescriptionHelpFormatter)
     add_opt = o_parser.add_argument
 
     add_opt("-a",
@@ -90,7 +116,7 @@ def _gen_config(cmd_opts: Namespace) -> _Config:
     incl_letters = not cmd_opts.alphabets
     incl_digits = not cmd_opts.numbers
     incl_punct = not cmd_opts.punctuation
-    p_len = options.length or 8
+    p_len = cmd_opts.length or 8
 
     config = _Config(incl_letters, incl_digits, incl_punct, p_len)
     return config
