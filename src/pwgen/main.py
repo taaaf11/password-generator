@@ -12,8 +12,12 @@ from __future__ import annotations
 import secrets
 import string
 import sys
-from argparse import ArgumentParser, Namespace, RawDescriptionHelpFormatter
+import typing
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from dataclasses import dataclass
+
+if typing.TYPE_CHECKING:
+    from argparse import Namespace
 
 PROG_NAME = "pwgen"
 PROG_DESC = """
@@ -45,7 +49,10 @@ class _Config:
 
     def __post_init__(self):
         if not (self.letters or self.digits or self.punct):
-            print("At least one of the three components (alphabets, numbers or symbols) must be allowed", file=sys.stderr)
+            print(
+                "At least one of the three components (alphabets, numbers or symbols) must be allowed",
+                file=sys.stderr,
+            )
             sys.exit(1)
 
 
@@ -76,28 +83,36 @@ def gen_pass(config: _Config) -> str:
 def parse_opts() -> Namespace:
     """Parse command line options and return Namespace object."""
 
-    o_parser = ArgumentParser(prog=PROG_NAME, description=PROG_DESC, epilog=PROG_EPILOG, formatter_class=RawDescriptionHelpFormatter)
+    o_parser = ArgumentParser(
+        prog=PROG_NAME,
+        description=PROG_DESC,
+        epilog=PROG_EPILOG,
+        formatter_class=RawDescriptionHelpFormatter,
+    )
     add_opt = o_parser.add_argument
 
-    add_opt("-a",
-            "--alphabets",
-            action="store_true",
-            help="Don't include alphabets in the password. (Default is to include)"
-            )
-    add_opt("-n",
-            "--numbers",
-            action="store_true",
-            help="Don't include numbers in the password. (Default is to include)"
-            )
-    add_opt("-p",
-            "--punctuation",
-            action="store_true",
-            help="Don't include symbols in the password. (Default is to include)"
-            )
+    add_opt(
+        "-a",
+        "--alphabets",
+        action="store_true",
+        help="Don't include alphabets in the password. (Default is to include)",
+    )
+    add_opt(
+        "-n",
+        "--numbers",
+        action="store_true",
+        help="Don't include numbers in the password. (Default is to include)",
+    )
+    add_opt(
+        "-p",
+        "--punctuation",
+        action="store_true",
+        help="Don't include symbols in the password. (Default is to include)",
+    )
     add_opt("-l",
             "--length",
             type=int,
-            help="Length of the password. (Default is 8)"
+            help="Length of the password. (Default is 8)",
             )
 
     return o_parser.parse_args()
