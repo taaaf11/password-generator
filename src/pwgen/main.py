@@ -10,10 +10,10 @@
 from __future__ import annotations
 
 import secrets
+import string
 import sys
 from argparse import ArgumentParser, Namespace, RawDescriptionHelpFormatter
 from dataclasses import dataclass
-from string import ascii_letters, digits, punctuation
 
 PROG_NAME = "pwgen"
 PROG_DESC = """
@@ -35,8 +35,6 @@ Version {PROG_VERSION}.
 Written by {PROG_AUTHOR} <{PROG_AUTHOR_CONTACT}>.
 """
 
-BASE = ascii_letters + digits + punctuation
-
 
 @dataclass(frozen=True)
 class _Config:
@@ -51,7 +49,7 @@ class _Config:
             sys.exit(1)
 
 
-def _gen_pass(config: _Config) -> str:
+def gen_pass(config: _Config) -> str:
     """The main password generator."""
 
     passwd_len = config.length
@@ -61,11 +59,11 @@ def _gen_pass(config: _Config) -> str:
     passwd = ""
 
     if config.letters:
-        base += "".join(c for c in BASE if c in ascii_letters)
+        base += string.ascii_letters
     if config.digits:
-        base += "".join(c for c in BASE if c in digits)
+        base += string.digits
     if config.punct:
-        base += "".join(c for c in BASE if c in punctuation)
+        base += string.punctuation
 
     for _ in range(passwd_len):
         while (char := secrets.choice(base)) == "\\":
@@ -105,13 +103,8 @@ def parse_opts() -> Namespace:
     return o_parser.parse_args()
 
 
-def _gen_config(cmd_opts: Namespace) -> _Config:
+def gen_config(cmd_opts: Namespace) -> _Config:
     """Generate config from arguments."""
-
-    incl_letters = True
-    incl_digits = True
-    incl_punct = True
-    p_len = 8
 
     incl_letters = not cmd_opts.alphabets
     incl_digits = not cmd_opts.numbers
@@ -121,12 +114,13 @@ def _gen_config(cmd_opts: Namespace) -> _Config:
     config = _Config(incl_letters, incl_digits, incl_punct, p_len)
     return config
 
+
 def gen_passwd() -> str:
     """Wrapper function for putting all things together."""
 
     options = parse_opts()
-    config = _gen_config(options)
-    passwd: str = _gen_pass(config)
+    config = gen_config(options)
+    passwd: str = gen_pass(config)
 
     return passwd
 
