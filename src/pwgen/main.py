@@ -57,7 +57,7 @@ class _Config:
             sys.exit(1)
 
 
-def gen_pass(config: _Config) -> str:
+def _gen_passwd(config: _Config) -> str:
     """The main password generator."""
 
     passwd_len = config.length
@@ -136,7 +136,7 @@ def gen_passwd() -> str:
 
     options = parse_opts()
     config = gen_config(options)
-    passwd: str = gen_pass(config)
+    passwd: str = _gen_passwd(config)
 
     return passwd
 
