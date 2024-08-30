@@ -27,3 +27,9 @@ You can even combine these options, e.g.
 ```bash
 pwgen -np -l 12  # generates a password of 12 characters that would not include numbers and symbols.
 ```
+
+
+## Installation
+1. Clone the repository or download zip.
+2. `cd` into project root.
+3. Run `pip install .`.
