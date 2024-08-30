@@ -50,7 +50,8 @@ class _Config:
     def __post_init__(self):
         if not (self.letters or self.digits or self.punct):
             print(
-                "At least one of the three components (alphabets, numbers or symbols) must be allowed",
+                "At least one of the three components (alphabets, numbers or \
+                symbols) must be allowed",
                 file=sys.stderr,
             )
             sys.exit(1)
