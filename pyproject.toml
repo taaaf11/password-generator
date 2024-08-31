@@ -1,7 +1,7 @@
 [project]
 name = "passwd-gen"
 description = "A random password generator in your toolset."
-version = "1.1.0"
+version = "2.0.0"
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
@@ -10,5 +10,5 @@ authors = [
 
 
 [project.scripts]
-pwgen = "pwgen.main:main"
+passwd-gen = "passwd_gen.main:main"
 
