@@ -10,10 +10,13 @@ def parse_wordlist(filename: str) -> dict[str, str]:
     word_dict = {}
     last_key = int(get_last_key(filename))
     first_key = int("1" * len(str(last_key)))
+
     with open(filename) as f:
         lines = f.readlines()
+
     for count, key in enumerate(range(first_key, last_key + 1)):
         word_dict[str(key)] = lines[count].strip()
+
     return word_dict
 
 
@@ -26,24 +29,24 @@ def get_last_key(filename: str) -> str:
 
     with open(filename) as f:
         lines = f.readlines()
+
     lcount = len(lines)
     # length of key
     lkey = len(str(lcount)[:-1])
     return "9" * lkey
 
 
-def get_keys(word_dict: dict, word_count: int) -> tuple[str]:
+def get_keys(word_dict: dict, word_count: int) -> tuple[str, ...]:
     """Get keys of words from dictionry."""
 
-    keys = []
+    # all keys that we can use
     avail_keys = list(word_dict)
-    for _ in range(word_count):
-        key = secrets.choice(avail_keys)
-        keys.append(key)
+    # keys to return to caller
+    keys = tuple(secrets.choice(avail_keys) for _ in range(word_count))
     return keys
 
 
-def _get_pass_words(word_dict: dict, join_char: str, word_count: int) -> tuple[str]:
+def _get_pass_words(word_dict: dict, join_char: str, word_count: int) -> tuple[str, ...]:
     """Get random words which would constitute password."""
 
     pass_words = []
@@ -52,12 +55,16 @@ def _get_pass_words(word_dict: dict, join_char: str, word_count: int) -> tuple[s
     for word in words:
         if len(pass_words) == word_count:
             return pass_words
+
         if "-" in word:
             pass_words.extend(word.split("-"))
+
         elif join_char in word:
             pass_words.extend(word.split("-"))
+
         else:
             pass_words.append(word)
+
     return pass_words
 
 
