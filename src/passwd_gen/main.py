@@ -73,6 +73,10 @@ def parse_opts() -> _Config:
     )
 
     options = o_parser.parse_args()
+
+    if options.count <= 0:
+        o_parser.error("Word count is invalid.")
+
     config = _Config(options.WORDLIST, options.join, options.count)
     return config
 
