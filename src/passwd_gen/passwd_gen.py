@@ -41,7 +41,7 @@ def get_last_key(filename: str) -> int:
     lcount = len(lines)
     # length of last key
     lkey_len = len(str(lcount)[:-1])
-    lkey = "9" * lkey_len
+    lkey = int("9" * lkey_len)
     return lkey
 
 
