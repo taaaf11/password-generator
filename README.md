@@ -3,29 +3,19 @@ A random password generator in your toolset.
 
 
 ## Usage
-- Generate a password (length is 8 characters by default).
+- Generate a password (includes 5 words by default).
 ```bash
 passwd-gen
 ```
 
-- Generate a password of custom length.
+- Generate a password having custom number of words.
 ```bash
-passwd-gen -l <required length>
+passwd-gen -c 7  # password would contain 7 words.
 ```
 
-- Don't want to include alphabets, numbers or symbols
+- Use custom character for joining password-words.
 ```bash
-passwd-gen -a  # would not include alphabets
-```
-```bash
-passwd-gen -n  # would not include numbers
-```
-```bash
-passwd-gen -p  # would not include symbols
-```
-You can even combine these options, e.g.
-```bash
-passwd-gen -np -l 12  # generates a password of 12 characters that would not include numbers and symbols.
+passwd-gen -j "="
 ```
 
 
